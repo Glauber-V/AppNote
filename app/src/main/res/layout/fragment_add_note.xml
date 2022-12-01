@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/add_note_frag_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/add_note_frag_note_title"
+            style="@style/note_title_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/note_title_hint"
+            android:importantForAutofill="no"
+            android:inputType="textAutoComplete|text"
+            android:minHeight="48dp"
+            android:paddingStart="@dimen/note_horizontal_space"
+            android:paddingTop="@dimen/note_vertical_space"
+            android:paddingEnd="@dimen/note_horizontal_space"
+            android:paddingBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/add_note_frag_note_content"
+            style="@style/note_content_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/note_content_hint"
+            android:importantForAutofill="no"
+            android:inputType="textAutoComplete|textMultiLine"
+            android:overScrollMode="ifContentScrolls"
+            android:paddingStart="@dimen/note_horizontal_space"
+            android:paddingTop="@dimen/note_vertical_space"
+            android:paddingEnd="@dimen/note_horizontal_space"
+            android:paddingBottom="@dimen/note_vertical_space"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_note_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:contentDescription="@string/add_or_update_note_fab_content_description"
+        android:focusable="true"
+        android:src="@drawable/ic_baseline_check_24"
+        app:fabSize="normal"
+        app:layout_anchor="@id/add_note_frag_linear_layout"
+        app:layout_anchorGravity="bottom|end"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
