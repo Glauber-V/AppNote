@@ -23,14 +23,11 @@ class EditNoteFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            drawingViewId = R.id.nav_host_fragment
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-            setAllContainerColors(Color.WHITE)
-        }
+
+        setupAnimations()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentEditNoteBinding.inflate(inflater, container, false)
         notesViewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
         return binding.root
@@ -39,14 +36,28 @@ class EditNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.updateNoteFab.show()
+        setupSelectedNote()
+        setupFab()
+    }
 
+
+    private fun setupAnimations() {
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.nav_host_fragment
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            setAllContainerColors(Color.WHITE)
+        }
+    }
+
+    private fun setupSelectedNote() {
         notesViewModel.selectedNote.observe(viewLifecycleOwner) { hasNote ->
             hasNote?.let { note ->
                 binding.note = note
             }
         }
+    }
 
+    private fun setupFab() {
         binding.updateNoteFab.setOnClickListener {
             binding.updateNoteFab.hide()
             val note = binding.note ?: Note()

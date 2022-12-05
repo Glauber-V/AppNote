@@ -21,7 +21,7 @@ class AddNoteFragment : Fragment() {
     lateinit var notesViewModel: NotesViewModel
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAddNoteBinding.inflate(inflater, container, false)
         notesViewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
         return binding.root
@@ -30,12 +30,16 @@ class AddNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.addNoteFab.show()
+        setupAnimations()
+        setupFab()
+    }
 
+
+    private fun setupAnimations() {
         enterTransition = MaterialContainerTransform().apply {
             startView = requireActivity().findViewById(R.id.create_note_fab)
             endView = binding.addNoteFragLinearLayout
-            duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
             setAllContainerColors(Color.WHITE)
         }
 
@@ -43,10 +47,11 @@ class AddNoteFragment : Fragment() {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()
             addTarget(binding.addNoteFragLinearLayout)
         }
+    }
 
+    private fun setupFab() {
         binding.addNoteFab.setOnClickListener {
             if (verifyNote()) {
-                binding.addNoteFab.hide()
                 val noteTitle = binding.addNoteFragNoteTitle.text.toString()
                 val noteContent = binding.addNoteFragNoteContent.text.toString()
                 val newNote = Note(title = noteTitle, content = noteContent)
@@ -55,6 +60,7 @@ class AddNoteFragment : Fragment() {
             }
         }
     }
+
 
     private fun verifyNote(): Boolean {
         val isValid = binding.addNoteFragNoteTitle.text.toString().isNotEmpty()

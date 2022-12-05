@@ -25,7 +25,7 @@ class NotesFragment : Fragment(), NotesAdapter.NotesListener {
     lateinit var notesAdapter: NotesAdapter
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentNotesBinding.inflate(inflater, container, false)
         notesViewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
         return binding.root
@@ -34,12 +34,28 @@ class NotesFragment : Fragment(), NotesAdapter.NotesListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.createNoteFab.show()
+        setupAnimations(view)
+        setupRecyclerView()
+        setupFab()
+    }
 
+
+    private fun setupAnimations(view: View) {
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
 
+        exitTransition = MaterialElevationScale(false).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+    }
+
+    private fun setupRecyclerView() {
         notesAdapter = NotesAdapter(this)
+
         binding.notesRecyclerView.apply {
             val noteTouchCallback = NoteTouchCallback(requireContext(), binding.root, notesViewModel, notesAdapter)
             ItemTouchHelper(noteTouchCallback).attachToRecyclerView(this)
@@ -51,26 +67,25 @@ class NotesFragment : Fragment(), NotesAdapter.NotesListener {
                 notesAdapter.submitList(notes)
             }
         }
+    }
 
+    private fun setupFab() {
         binding.createNoteFab.setOnClickListener {
-            binding.createNoteFab.hide()
-            val toAddNoteFragment = NotesFragmentDirections.actionNotesFragmentToAddNoteFragment()
-            findNavController().navigate(toAddNoteFragment)
+            navigateToAddNoteFragment()
         }
     }
 
+
     override fun onNoteClicked(cardView: View, note: Note) {
         notesViewModel.selectNote(note)
-
         val toEditNoteFragment = NotesFragmentDirections.actionNotesFragmentToEditNoteFragment()
         val transitionName = getString(R.string.note_edit_transition_name)
         val withExtras = FragmentNavigatorExtras(cardView to transitionName)
-
-        binding.createNoteFab.hide()
-
-        exitTransition = MaterialElevationScale(false).apply { duration = resources.getInteger(R.integer.motion_duration_large).toLong() }
-        reenterTransition = MaterialElevationScale(true).apply { duration = resources.getInteger(R.integer.motion_duration_large).toLong() }
-
         findNavController().navigate(toEditNoteFragment, withExtras)
+    }
+
+    private fun navigateToAddNoteFragment() {
+        val toAddNoteFragment = NotesFragmentDirections.actionNotesFragmentToAddNoteFragment()
+        findNavController().navigate(toAddNoteFragment)
     }
 }
