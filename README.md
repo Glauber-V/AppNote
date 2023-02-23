@@ -4,11 +4,10 @@ AppNote is a simple note app where you can add, update and delete notes.
 
 ## Architecture
 
-AppNote is written with the SOLID principles and the [recommended architecture](https://developer.android.com/topic/architecture) by Google to create
-a robust, scalable, and easy-to-understand app. All notes are stored in a local database managed
-by [RoomDatabase](https://developer.android.com/training/data-storage/room). Repositories are defined as interfaces to be later implemented by
-production and testing code. Business logic is separated from the UI inside a ViewModel. And finally, [Hilt](https://dagger.dev/hilt/) modules inject
-necessary classes to the respective consumers.
+AppNote is written with the SOLID principles and the [recommended architecture](https://developer.android.com/topic/architecture) by Google.
+All notes are stored in a local database managed by [RoomDatabase](https://developer.android.com/training/data-storage/room). Repositories are defined
+as interfaces to be later implemented by production and testing code. Business logic is separated from the UI inside a ViewModel. And
+finally, [Hilt](https://dagger.dev/hilt/) modules inject necessary classes to the respective consumers.
 
 ## Animations
 
