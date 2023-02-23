@@ -1,6 +1,5 @@
 package com.example.appnote.util.rules
 
-import com.example.appnote.R
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
