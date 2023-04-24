@@ -1,7 +1,6 @@
 package com.example.appnote.di
 
 import com.example.appnote.data.database.AppNoteDatabase
-import com.example.appnote.data.dispatchers.DispatcherProvider
 import com.example.appnote.data.repository.AppNoteRepository
 import com.example.appnote.data.repository.DefaultAppNoteRepository
 import dagger.Module
@@ -16,10 +15,7 @@ object AppNoteRepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAppNoteRepository(
-        appNoteDatabase: AppNoteDatabase,
-        dispatcherProvider: DispatcherProvider
-    ): AppNoteRepository {
-        return DefaultAppNoteRepository(appNoteDatabase, dispatcherProvider)
+    fun provideAppNoteRepository(appNoteDatabase: AppNoteDatabase): AppNoteRepository {
+        return DefaultAppNoteRepository(appNoteDatabase)
     }
 }

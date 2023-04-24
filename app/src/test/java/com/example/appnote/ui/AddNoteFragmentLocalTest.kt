@@ -29,8 +29,9 @@ import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
 @UninstallModules(
-    AppNoteDatabaseModule::class,
-    DispatcherProviderModule::class)
+    DispatcherProviderModule::class,
+    AppNoteDatabaseModule::class
+)
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
 @Config(application = HiltTestApplication::class)
@@ -39,10 +40,7 @@ class AddNoteFragmentLocalTest {
     @get:Rule(order = 0) var hiltAndroidRule = HiltAndroidRule(this)
     @get:Rule(order = 1) var standardTestDispatcherRule = StandardTestDispatcherRule()
     @get:Rule(order = 2) var instantTaskExecutorRule = InstantTaskExecutorRule()
-    @get:Rule(order = 3) var navHostControllerRule = NavHostControllerRule(
-        navGraphId = R.navigation.nav_graph,
-        currentDestination = R.id.add_note_fragment
-    )
+    @get:Rule(order = 3) var navHostControllerRule = NavHostControllerRule(currentDestination = R.id.add_note_fragment)
 
     private lateinit var testNavHostController: TestNavHostController
 
@@ -58,12 +56,11 @@ class AddNoteFragmentLocalTest {
 
             onView(withId(R.id.add_note_frag_note_title))
                 .perform(replaceText("title"))
+
             onView(withId(R.id.add_note_frag_note_content))
                 .perform(replaceText("content"))
 
-            onView(withId(R.id.add_note_fab))
-                .perform(click())
-
+            onFabClicked()
             advanceUntilIdle()
 
             val notes = notesViewModel.notes.getOrAwaitValue()

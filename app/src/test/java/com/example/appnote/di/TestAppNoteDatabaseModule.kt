@@ -13,7 +13,8 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [AppNoteDatabaseModule::class])
+    replaces = [AppNoteDatabaseModule::class]
+)
 object TestAppNoteDatabaseModule {
 
     @Provides

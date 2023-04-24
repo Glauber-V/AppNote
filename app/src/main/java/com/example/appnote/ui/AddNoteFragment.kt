@@ -15,7 +15,7 @@ import com.example.appnote.databinding.FragmentAddNoteBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialContainerTransform
 
-class AddNoteFragment : Fragment() {
+class AddNoteFragment : Fragment(), FabClickListener {
 
     private lateinit var binding: FragmentAddNoteBinding
     lateinit var notesViewModel: NotesViewModel
@@ -30,34 +30,26 @@ class AddNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupAnimations()
-        setupFab()
-    }
-
-
-    private fun setupAnimations() {
         enterTransition = MaterialContainerTransform().apply {
-            startView = requireActivity().findViewById(R.id.create_note_fab)
-            endView = binding.addNoteFragLinearLayout
+            startView = requireActivity().findViewById(R.id.fab)
+            endView = binding.addNoteRoot
             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
             setAllContainerColors(Color.WHITE)
         }
 
         returnTransition = Slide().apply {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()
-            addTarget(binding.addNoteFragLinearLayout)
+            addTarget(binding.addNoteRoot)
         }
     }
 
-    private fun setupFab() {
-        binding.addNoteFab.setOnClickListener {
-            if (verifyNote()) {
-                val noteTitle = binding.addNoteFragNoteTitle.text.toString()
-                val noteContent = binding.addNoteFragNoteContent.text.toString()
-                val newNote = Note(title = noteTitle, content = noteContent)
-                notesViewModel.insertNote(newNote)
-                findNavController().navigateUp()
-            }
+    override fun onFabClicked() {
+        if (verifyNote()) {
+            val noteTitle = binding.addNoteFragNoteTitle.text.toString()
+            val noteContent = binding.addNoteFragNoteContent.text.toString()
+            val newNote = Note(title = noteTitle, content = noteContent)
+            notesViewModel.insertNote(newNote)
+            findNavController().popBackStack()
         }
     }
 

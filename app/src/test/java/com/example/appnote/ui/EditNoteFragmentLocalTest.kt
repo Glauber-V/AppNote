@@ -3,8 +3,7 @@ package com.example.appnote.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.example.appnote.R
 import com.example.appnote.data.model.Note
@@ -31,8 +30,9 @@ import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
 @UninstallModules(
-    AppNoteDatabaseModule::class,
-    DispatcherProviderModule::class)
+    DispatcherProviderModule::class,
+    AppNoteDatabaseModule::class
+)
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
 @Config(application = HiltTestApplication::class)
@@ -41,10 +41,7 @@ class EditNoteFragmentLocalTest {
     @get:Rule(order = 0) var hiltAndroidRule = HiltAndroidRule(this)
     @get:Rule(order = 1) var standardTestDispatcherRule = StandardTestDispatcherRule()
     @get:Rule(order = 2) var instantTaskExecutorRule = InstantTaskExecutorRule()
-    @get:Rule(order = 3) var navHostControllerRule = NavHostControllerRule(
-        navGraphId = R.navigation.nav_graph,
-        currentDestination = R.id.edit_note_fragment
-    )
+    @get:Rule(order = 3) var navHostControllerRule = NavHostControllerRule(currentDestination = R.id.edit_note_fragment)
 
     private lateinit var navHostController: TestNavHostController
 
@@ -57,6 +54,7 @@ class EditNoteFragmentLocalTest {
     @Test
     fun launchFragment_clickFab_updateNote_verifyNoteWasUpdated() = runTest {
         launchFragmentInHiltContainer<EditNoteFragment>(navHostController = navHostController) {
+
             val note = Note(id = 36, title = "Note 36", content = "This is the note 36")
             notesViewModel.insertNote(note)
             advanceUntilIdle()
@@ -69,11 +67,11 @@ class EditNoteFragmentLocalTest {
 
             onView(withId(R.id.edit_note_frag_note_title))
                 .perform(replaceText("Updated title"))
+
             onView(withId(R.id.edit_note_frag_note_content))
                 .perform(replaceText("Updated content"))
-            onView(withId(R.id.update_note_fab))
-                .perform(click())
 
+            onFabClicked()
             advanceUntilIdle()
 
             val notes = notesViewModel.notes.getOrAwaitValue()

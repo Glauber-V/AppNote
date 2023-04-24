@@ -3,7 +3,6 @@ package com.example.appnote.util
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.util.Preconditions
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.navigation.NavHostController
@@ -37,9 +36,10 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         }
 
         val fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
-            Preconditions.checkNotNull(T::class.java.classLoader),
+            T::class.java.classLoader!!,
             T::class.java.name
         )
+
         fragment.arguments = fragmentArgs
 
         navHostController?.let {

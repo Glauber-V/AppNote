@@ -9,15 +9,13 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 @ExperimentalCoroutinesApi
-class StandardTestDispatcherRule: TestWatcher() {
+class StandardTestDispatcherRule : TestWatcher() {
 
     override fun starting(description: Description) {
         Dispatchers.setMain(StandardTestDispatcher())
-        super.starting(description)
     }
 
     override fun finished(description: Description) {
         Dispatchers.resetMain()
-        super.finished(description)
     }
 }

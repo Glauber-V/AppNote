@@ -1,7 +1,7 @@
 package com.example.appnote.di
 
 import com.example.appnote.data.dispatchers.DispatcherProvider
-import com.example.appnote.data.dispatchers.FakeDispatcherProvider
+import com.example.appnote.dispatchers.FakeDispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
@@ -13,7 +13,8 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [DispatcherProviderModule::class])
+    replaces = [DispatcherProviderModule::class]
+)
 object TestDispatcherProviderModule {
 
     @Provides

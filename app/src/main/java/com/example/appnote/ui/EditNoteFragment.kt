@@ -15,7 +15,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EditNoteFragment : Fragment() {
+class EditNoteFragment : Fragment(), FabClickListener {
 
     private lateinit var binding: FragmentEditNoteBinding
     lateinit var notesViewModel: NotesViewModel
@@ -24,7 +24,11 @@ class EditNoteFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setupAnimations()
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.nav_host_fragment
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            setAllContainerColors(Color.WHITE)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -36,20 +40,6 @@ class EditNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupSelectedNote()
-        setupFab()
-    }
-
-
-    private fun setupAnimations() {
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            drawingViewId = R.id.nav_host_fragment
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-            setAllContainerColors(Color.WHITE)
-        }
-    }
-
-    private fun setupSelectedNote() {
         notesViewModel.selectedNote.observe(viewLifecycleOwner) { hasNote ->
             hasNote?.let { note ->
                 binding.note = note
@@ -57,16 +47,16 @@ class EditNoteFragment : Fragment() {
         }
     }
 
-    private fun setupFab() {
-        binding.updateNoteFab.setOnClickListener {
-            binding.updateNoteFab.hide()
-            val note = binding.note ?: Note()
-            val updatedTitle = binding.editNoteFragNoteTitle.text.toString()
-            val updatedContent = binding.editNoteFragNoteContent.text.toString()
-            val updatedNote = note.copy(title = updatedTitle, content = updatedContent)
-            notesViewModel.updateNote(updatedNote)
-            notesViewModel.unselectNote()
-            findNavController().navigateUp()
-        }
+    override fun onFabClicked() {
+        val note: Note = binding.note ?: return
+
+        val updatedTitle = binding.editNoteFragNoteTitle.text.toString()
+        val updatedContent = binding.editNoteFragNoteContent.text.toString()
+        val updatedNote = note.copy(title = updatedTitle, content = updatedContent)
+
+        notesViewModel.updateNote(updatedNote)
+        notesViewModel.unselectNote()
+
+        findNavController().popBackStack()
     }
 }

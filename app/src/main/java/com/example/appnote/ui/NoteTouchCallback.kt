@@ -2,12 +2,9 @@ package com.example.appnote.ui
 
 import android.content.Context
 import android.view.View
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.LEFT
-import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
+import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appnote.R
-import com.example.appnote.adapter.NotesAdapter
 import com.google.android.material.snackbar.Snackbar
 
 class NoteTouchCallback(
@@ -15,7 +12,7 @@ class NoteTouchCallback(
     private val requiredView: View,
     private val notesViewModel: NotesViewModel,
     private val notesAdapter: NotesAdapter
-) : ItemTouchHelper.SimpleCallback(0, LEFT or RIGHT) {
+) : SimpleCallback(0, LEFT or RIGHT) {
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         return true

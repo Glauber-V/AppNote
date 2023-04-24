@@ -4,9 +4,11 @@
           package="com.example.appnote">
 
     <application tools:ignore="MissingApplicationIcon">
+
         <activity
-            android:name=".HiltTestActivity"
-            android:exported="false"/>
+                android:name=".HiltTestActivity"
+                android:exported="false"/>
+
     </application>
 
 </manifest>

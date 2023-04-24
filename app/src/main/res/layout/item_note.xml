@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="note"
-            type="com.example.appnote.data.model.Note"/>
+                name="note"
+                type="com.example.appnote.data.model.Note"/>
         <variable
-            name="listener"
-            type="com.example.appnote.adapter.NotesAdapter.NotesListener"/>
+                name="noteClickListener"
+                type="com.example.appnote.ui.NoteClickListener"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/item_note_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="@{(view) -> listener.onNoteClicked(view, note)}"
-        android:transitionName="@{@string/note_item_transition_name(note.id)}"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        app:cardPreventCornerOverlap="true">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/item_note_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:layout_margin="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{(view) -> noteClickListener.onNoteClicked(view, note)}"
+            android:transitionName="@{@string/note_item_transition_name(note.id)}"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:cardPreventCornerOverlap="true">
 
-            <TextView
-                android:id="@+id/item_note_title"
-                style="@style/note_title_style"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/note_horizontal_space"
-                android:layout_marginTop="@dimen/note_vertical_space"
-                android:layout_marginEnd="@dimen/note_horizontal_space"
-                android:inputType="none"
-                android:maxLines="1"
-                android:text="@{note.title}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/place_holder_note_title"/>
-
-            <TextView
-                android:id="@+id/item_note_content"
-                style="@style/note_content_style"
-                android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/note_horizontal_space"
-                android:layout_marginTop="@dimen/note_vertical_space"
-                android:layout_marginEnd="@dimen/note_horizontal_space"
-                android:ellipsize="end"
-                android:inputType="none"
-                android:maxLines="4"
-                android:text="@{note.content}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_note_title"
-                tools:text="@string/place_holder_note_content"/>
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
+
+            <TextView
+                    android:id="@+id/item_note_title"
+                    style="@style/note_title_style"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/note_horizontal_space"
+                    android:layout_marginTop="@dimen/note_vertical_space"
+                    android:layout_marginEnd="@dimen/note_horizontal_space"
+                    android:inputType="none"
+                    android:maxLines="1"
+                    android:text="@{note.title}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/place_holder_note_title"/>
+
+            <TextView
+                    android:id="@+id/item_note_content"
+                    style="@style/note_content_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/note_horizontal_space"
+                    android:layout_marginTop="@dimen/note_vertical_space"
+                    android:layout_marginEnd="@dimen/note_horizontal_space"
+                    android:ellipsize="end"
+                    android:inputType="none"
+                    android:maxLines="4"
+                    android:text="@{note.content}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item_note_title"
+                    tools:text="@string/place_holder_note_content"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

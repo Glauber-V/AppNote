@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:id="@+id/add_note_frag_linear_layout"
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/add_note_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <EditText
+    <EditText
             android:id="@+id/add_note_frag_note_title"
             style="@style/note_title_style"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/note_title_hint"
             android:importantForAutofill="no"
@@ -23,13 +18,16 @@
             android:paddingStart="@dimen/note_horizontal_space"
             android:paddingTop="@dimen/note_vertical_space"
             android:paddingEnd="@dimen/note_horizontal_space"
-            android:paddingBottom="4dp"/>
+            android:paddingBottom="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <EditText
+    <EditText
             android:id="@+id/add_note_frag_note_content"
             style="@style/note_content_style"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:hint="@string/note_content_hint"
             android:importantForAutofill="no"
             android:inputType="textAutoComplete|textMultiLine"
@@ -39,21 +37,10 @@
             android:paddingEnd="@dimen/note_horizontal_space"
             android:paddingBottom="@dimen/note_vertical_space"
             android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_note_frag_note_title"/>
 
-    </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_note_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        android:contentDescription="@string/add_or_update_note_fab_content_description"
-        android:focusable="true"
-        android:src="@drawable/ic_baseline_check_24"
-        app:fabSize="normal"
-        app:layout_anchor="@id/add_note_frag_linear_layout"
-        app:layout_anchorGravity="bottom|end"/>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

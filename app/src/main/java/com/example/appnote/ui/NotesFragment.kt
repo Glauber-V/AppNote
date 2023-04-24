@@ -11,14 +11,13 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.appnote.R
-import com.example.appnote.adapter.NotesAdapter
 import com.example.appnote.data.model.Note
 import com.example.appnote.databinding.FragmentNotesBinding
 import com.google.android.material.transition.platform.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotesFragment : Fragment(), NotesAdapter.NotesListener {
+class NotesFragment : Fragment(), NoteClickListener, FabClickListener {
 
     private lateinit var binding: FragmentNotesBinding
     lateinit var notesViewModel: NotesViewModel
@@ -34,13 +33,6 @@ class NotesFragment : Fragment(), NotesAdapter.NotesListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupAnimations(view)
-        setupRecyclerView()
-        setupFab()
-    }
-
-
-    private fun setupAnimations(view: View) {
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
 
@@ -51,9 +43,7 @@ class NotesFragment : Fragment(), NotesAdapter.NotesListener {
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
         }
-    }
 
-    private fun setupRecyclerView() {
         notesAdapter = NotesAdapter(this)
 
         binding.notesRecyclerView.apply {
@@ -69,13 +59,6 @@ class NotesFragment : Fragment(), NotesAdapter.NotesListener {
         }
     }
 
-    private fun setupFab() {
-        binding.createNoteFab.setOnClickListener {
-            navigateToAddNoteFragment()
-        }
-    }
-
-
     override fun onNoteClicked(cardView: View, note: Note) {
         notesViewModel.selectNote(note)
         val toEditNoteFragment = NotesFragmentDirections.actionNotesFragmentToEditNoteFragment()
@@ -84,7 +67,7 @@ class NotesFragment : Fragment(), NotesAdapter.NotesListener {
         findNavController().navigate(toEditNoteFragment, withExtras)
     }
 
-    private fun navigateToAddNoteFragment() {
+    override fun onFabClicked() {
         val toAddNoteFragment = NotesFragmentDirections.actionNotesFragmentToAddNoteFragment()
         findNavController().navigate(toAddNoteFragment)
     }

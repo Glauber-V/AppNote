@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="note"
-            type="com.example.appnote.data.model.Note"/>
+                name="note"
+                type="com.example.appnote.data.model.Note"/>
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/edit_note_frag_linear_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:transitionName="@string/note_edit_transition_name">
 
-            <EditText
+        <EditText
                 android:id="@+id/edit_note_frag_note_title"
                 style="@style/note_title_style"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/note_title_hint"
                 android:importantForAutofill="no"
@@ -35,13 +29,16 @@
                 android:paddingEnd="@dimen/note_horizontal_space"
                 android:paddingBottom="@dimen/note_vertical_space"
                 android:text="@{note.title}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/place_holder_note_title"/>
 
-            <EditText
+        <EditText
                 android:id="@+id/edit_note_frag_note_content"
                 style="@style/note_content_style"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:hint="@string/note_content_hint"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine|text"
@@ -53,23 +50,12 @@
                 android:scrollbarStyle="outsideOverlay"
                 android:scrollbars="vertical"
                 android:text="@{note.content}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_note_frag_note_title"
                 tools:text="@string/place_holder_note_content"/>
 
-        </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/update_note_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
-            android:clickable="true"
-            android:contentDescription="@string/add_or_update_note_fab_content_description"
-            android:focusable="true"
-            android:src="@drawable/ic_baseline_check_24"
-            app:fabSize="normal"
-            app:layout_anchor="@id/edit_note_frag_linear_layout"
-            app:layout_anchorGravity="bottom|end"/>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
