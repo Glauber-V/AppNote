@@ -27,6 +27,4 @@ offers a set of transition patterns that help users navigate the app.
 
 ## Tests
 
-Tests are implemented with [Espresso](https://developer.android.com/training/testing/espresso) and [Robolectric](https://robolectric.org/), also you
-can run all test cases from a single [Suite](https://junit.org/junit4/javadoc/4.13/org/junit/runners/Suite.html) class. Custom rules are provided to
-make testing fragments with Hilt a more pleasant experience.
+Tests are implemented with [Espresso](https://developer.android.com/training/testing/espresso) and [Robolectric](https://robolectric.org/).
