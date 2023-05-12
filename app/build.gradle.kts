@@ -13,6 +13,7 @@ kapt {
 
 android {
 
+    namespace = "com.example.appnote"
     compileSdk = 32
 
     defaultConfig {
