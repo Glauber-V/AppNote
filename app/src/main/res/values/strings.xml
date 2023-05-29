@@ -3,24 +3,17 @@
     <!--App Name-->
     <string name="app_name">AppNote</string>
 
-    <!--Fragments-->
-    <string name="notes_fragment_name">@string/app_name</string>
-    <string name="add_note_fragment_name">Create note</string>
-    <string name="edit_note_fragment_name">Edit note</string>
-
     <!--Note-->
-    <string name="note_title_hint">Enter Title</string>
-    <string name="note_content_hint">Enter Note</string>
-    <string name="add_note_fab_content_description">Create a new note</string>
-    <string name="add_or_update_note_fab_content_description">Save this note</string>
-    <string name="note_warning_no_title">It\'s necessary to have a tittle if you want to save this note</string>
+    <string name="note_hint_title">Enter Title</string>
+    <string name="note_hint_content">Enter Note</string>
     <string name="note_snackbar_undo_action">Undo</string>
     <string name="note_snackbar_deleted_msg">Note successfully deleted</string>
+    <string name="note_warning_no_title">It\'s necessary to have a tittle if you want to save this note</string>
 
-    <!--Transition Names-->
-    <string name="note_item_transition_name">note_%1$s_transition_name</string>
-    <string name="note_edit_transition_name">note_edit_transition_name</string>
-    <string name="note_add_transition_name">note_add_transition_name</string>
+    <!--Content Descriptions-->
+    <string name="content_desc_write_new_note">Create a new note</string>
+    <string name="content_desc_save_note">Save this note</string>
+    <string name="content_desc_delete_note">Delete this note</string>
 
     <!--Tools Resources-->
     <string name="place_holder_note_title">Vor Speech</string>
