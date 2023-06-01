@@ -8,14 +8,14 @@ import com.example.appnote.ui.NotesViewModel
 import com.example.appnote.ui.theme.AppNoteTheme
 
 @Composable
-fun AppNoteApp() {
-    val navHostController: NavHostController = rememberNavController()
-    val notesViewModel: NotesViewModel = viewModel()
-
+fun AppNoteApp(
+    navHostController: NavHostController = rememberNavController(),
+    notesViewModel: NotesViewModel = viewModel()
+) {
     AppNoteTheme {
         AppNoteNavHost(
             navController = navHostController,
-            startDestination = AllNotesDestination.route,
+            startDestination = AppNoteDestinations.ALL_NOTES_ROUTE,
             notesViewModel = notesViewModel
         )
     }

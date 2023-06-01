@@ -110,4 +110,7 @@ dependencies {
     kaptTest("com.google.dagger:hilt-android-compiler:2.45")
 
     testImplementation("org.robolectric:robolectric:4.10")
+
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

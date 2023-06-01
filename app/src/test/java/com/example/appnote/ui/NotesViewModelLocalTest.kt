@@ -43,22 +43,30 @@ class NotesViewModelLocalTest {
 
     @Test
     fun createNote_observeNotesList_returnSavedNote() = runTest {
+        var notes = notesViewModel.notes.getOrAwaitValue()
+        assertThat(notes).isEmpty()
+
         val note = Note(id = 49, title = "Note 49", content = "This is the note 49")
         notesViewModel.insertNote(note)
         advanceUntilIdle()
 
-        val notes = notesViewModel.notes.getOrAwaitValue()
+        notes = notesViewModel.notes.getOrAwaitValue()
+        assertThat(notes).isNotEmpty()
         assertThat(notes).hasSize(1)
         assertThat(notes).contains(note)
     }
 
     @Test
     fun updateNote_verifyNoteWasUpdated() = runTest {
+        var notes = notesViewModel.notes.getOrAwaitValue()
+        assertThat(notes).isEmpty()
+
         val note = Note(id = 47, title = "Note 47", content = "This is the note 47")
         notesViewModel.insertNote(note)
         advanceUntilIdle()
 
-        var notes = notesViewModel.notes.getOrAwaitValue()
+        notes = notesViewModel.notes.getOrAwaitValue()
+        assertThat(notes).isNotEmpty()
         assertThat(notes).hasSize(1)
         assertThat(notes).contains(note)
 
@@ -67,16 +75,22 @@ class NotesViewModelLocalTest {
         advanceUntilIdle()
 
         notes = notesViewModel.notes.getOrAwaitValue()
+        assertThat(notes).isNotEmpty()
+        assertThat(notes).hasSize(1)
         assertThat(notes.first().title).isEqualTo("Updated note 47")
     }
 
     @Test
     fun deleteNote_verifyNoteWasDeleted() = runTest {
+        var notes = notesViewModel.notes.getOrAwaitValue()
+        assertThat(notes).isEmpty()
+
         val note = Note(id = 47, title = "Note 47", content = "This is the note 47")
         notesViewModel.insertNote(note)
         advanceUntilIdle()
 
-        var notes = notesViewModel.notes.getOrAwaitValue()
+        notes = notesViewModel.notes.getOrAwaitValue()
+        assertThat(notes).isNotEmpty()
         assertThat(notes).hasSize(1)
         assertThat(notes).contains(note)
 
