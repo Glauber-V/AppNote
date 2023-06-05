@@ -2,6 +2,8 @@ package com.example.appnote.ui
 
 import androidx.activity.ComponentActivity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.compose.runtime.State
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -12,10 +14,10 @@ import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.printToLog
 import com.example.appnote.R
 import com.example.appnote.data.dispatchers.DispatcherProvider
+import com.example.appnote.data.model.Note
 import com.example.appnote.data.repository.AppNoteRepository
 import com.example.appnote.di.AppNoteDatabaseModule
 import com.example.appnote.di.DispatcherProviderModule
-import com.example.appnote.util.getOrAwaitValue
 import com.example.appnote.util.getStringResource
 import com.example.appnote.util.rules.StandardTestDispatcherRule
 import com.example.appnote.util.showSemanticTreeInConsole
@@ -50,6 +52,7 @@ class AddNoteScreenTest {
     @Inject lateinit var appNoteRepository: AppNoteRepository
     @Inject lateinit var dispatcherProvider: DispatcherProvider
     private lateinit var notesViewModel: NotesViewModel
+    private lateinit var notes: State<List<Note>>
 
     @Before
     fun setUp() {
@@ -57,6 +60,7 @@ class AddNoteScreenTest {
         showSemanticTreeInConsole()
         composeRule.setContent {
             notesViewModel = NotesViewModel(appNoteRepository, dispatcherProvider)
+            notes = notesViewModel.notes.observeAsState(initial = emptyList())
             AddNoteScreen(
                 onFabClicked = { notesViewModel.insertNote(it) }
             )
@@ -65,9 +69,9 @@ class AddNoteScreenTest {
 
     @Test
     fun onAddNoteScreen_writeNewNote_verifySuccessfullyInserted() = runTest {
+        assertThat(notes.value).isEmpty()
+
         composeRule.apply {
-            var notes = notesViewModel.notes.getOrAwaitValue()
-            assertThat(notes).isEmpty()
 
             onRoot().printToLog(tag = "WriteNewNote|EmptyNote")
 
@@ -93,11 +97,10 @@ class AddNoteScreenTest {
 
             onRoot().printToLog(tag = "WriteNewNote|FilledNote")
 
-            notes = notesViewModel.notes.getOrAwaitValue()
-            assertThat(notes).isNotEmpty()
-            assertThat(notes).hasSize(1)
-            assertThat(notes.first().title).isEqualTo(noteTitle)
-            assertThat(notes.first().content).isEqualTo(noteContent)
+            assertThat(notes.value).isNotEmpty()
+            assertThat(notes.value).hasSize(1)
+            assertThat(notes.value.first().title).isEqualTo(noteTitle)
+            assertThat(notes.value.first().content).isEqualTo(noteContent)
 
             onNodeWithText(noteTitle)
                 .assertExists()

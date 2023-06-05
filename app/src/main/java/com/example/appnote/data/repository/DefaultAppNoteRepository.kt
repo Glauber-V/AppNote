@@ -1,8 +1,8 @@
 package com.example.appnote.data.repository
 
-import androidx.lifecycle.LiveData
 import com.example.appnote.data.database.AppNoteDatabase
 import com.example.appnote.data.model.Note
+import kotlinx.coroutines.flow.Flow
 
 class DefaultAppNoteRepository(private val database: AppNoteDatabase) : AppNoteRepository {
 
@@ -19,7 +19,7 @@ class DefaultAppNoteRepository(private val database: AppNoteDatabase) : AppNoteR
         database.getNoteDao().delete(note)
     }
 
-    override fun getAllNotes(): LiveData<List<Note>> {
+    override fun getAllNotes(): Flow<List<Note>> {
         return database.getNoteDao().getAllNotes()
     }
 }

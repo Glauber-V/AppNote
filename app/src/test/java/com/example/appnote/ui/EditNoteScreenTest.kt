@@ -2,6 +2,8 @@ package com.example.appnote.ui
 
 import androidx.activity.ComponentActivity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.compose.runtime.State
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -16,7 +18,6 @@ import com.example.appnote.data.model.Note
 import com.example.appnote.data.repository.AppNoteRepository
 import com.example.appnote.di.AppNoteDatabaseModule
 import com.example.appnote.di.DispatcherProviderModule
-import com.example.appnote.util.getOrAwaitValue
 import com.example.appnote.util.getStringResource
 import com.example.appnote.util.rules.StandardTestDispatcherRule
 import com.example.appnote.util.showSemanticTreeInConsole
@@ -51,7 +52,13 @@ class EditNoteScreenTest {
     @Inject lateinit var appNoteRepository: AppNoteRepository
     @Inject lateinit var dispatcherProvider: DispatcherProvider
     private lateinit var notesViewModel: NotesViewModel
+    private lateinit var notes: State<List<Note>>
     private lateinit var note: Note
+
+    private val oldTitle = "Old Title"
+    private val oldContent = "Old Content"
+    private val newTitle = "New Title"
+    private val newContent = "New Content"
 
     @Before
     fun setUp() {
@@ -59,7 +66,8 @@ class EditNoteScreenTest {
         showSemanticTreeInConsole()
         composeRule.setContent {
             notesViewModel = NotesViewModel(appNoteRepository, dispatcherProvider)
-            note = Note(id = 1, title = "Old Title", content = "Old Content")
+            notes = notesViewModel.notes.observeAsState(initial = emptyList())
+            note = Note(id = 1, title = oldTitle, content = oldContent)
             EditNoteScreen(
                 note = note,
                 onFabClicked = { notesViewModel.updateNote(it) }
@@ -72,21 +80,18 @@ class EditNoteScreenTest {
         notesViewModel.insertNote(note)
         advanceUntilIdle()
 
-        var notes = notesViewModel.notes.getOrAwaitValue()
-        assertThat(notes).isNotEmpty()
-        assertThat(notes).hasSize(1)
-        assertThat(notes).contains(note)
+        assertThat(notes.value).isNotEmpty()
+        assertThat(notes.value).hasSize(1)
+        assertThat(notes.value).contains(note)
 
         composeRule.apply {
             onRoot().printToLog(tag = "EditNoteScreen|NoteWithOldValues")
 
-            val newTitle = "New title"
             onNodeWithText(note.title)
                 .assertExists()
                 .assertIsDisplayed()
                 .performTextReplacement(newTitle)
 
-            val newContent = "New content"
             onNodeWithText(note.content)
                 .assertExists()
                 .assertIsDisplayed()
@@ -98,11 +103,10 @@ class EditNoteScreenTest {
 
             onRoot().printToLog(tag = "EditNoteScreen|NoteWithNewValues")
 
-            notes = notesViewModel.notes.getOrAwaitValue()
-            assertThat(notes).isNotEmpty()
-            assertThat(notes).hasSize(1)
-            assertThat(notes.first().title).isEqualTo(newTitle)
-            assertThat(notes.first().content).isEqualTo(newContent)
+            assertThat(notes.value).isNotEmpty()
+            assertThat(notes.value).hasSize(1)
+            assertThat(notes.value.first().title).isEqualTo(newTitle)
+            assertThat(notes.value.first().content).isEqualTo(newContent)
 
             onNodeWithText(newTitle)
                 .assertExists()

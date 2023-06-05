@@ -2,7 +2,7 @@ package com.example.appnote.ui
 
 import androidx.activity.ComponentActivity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -18,7 +18,6 @@ import com.example.appnote.data.model.Note
 import com.example.appnote.data.repository.AppNoteRepository
 import com.example.appnote.di.AppNoteDatabaseModule
 import com.example.appnote.di.DispatcherProviderModule
-import com.example.appnote.util.getOrAwaitValue
 import com.example.appnote.util.getStringResource
 import com.example.appnote.util.rules.StandardTestDispatcherRule
 import com.example.appnote.util.showSemanticTreeInConsole
@@ -53,6 +52,7 @@ class AllNotesScreenTest {
     @Inject lateinit var appNoteRepository: AppNoteRepository
     @Inject lateinit var dispatcherProvider: DispatcherProvider
     private lateinit var notesViewModel: NotesViewModel
+    private lateinit var notes: State<List<Note>>
 
     @Before
     fun setUp() {
@@ -60,9 +60,9 @@ class AllNotesScreenTest {
         showSemanticTreeInConsole()
         composeRule.setContent {
             notesViewModel = NotesViewModel(appNoteRepository, dispatcherProvider)
-            val notes by notesViewModel.notes.observeAsState(initial = emptyList())
+            notes = notesViewModel.notes.observeAsState(initial = emptyList())
             AllNotesScreen(
-                notes = notes,
+                notes = notes.value,
                 onFabClicked = {},
                 onNoteClicked = {},
                 onNoteDeleted = { notesViewModel.deleteNote(it) },
@@ -73,28 +73,25 @@ class AllNotesScreenTest {
 
     @Test
     fun onAllNotesScreen_write3Notes_verifyNotesAreDisplayed() = runTest {
-        var notes = notesViewModel.notes.getOrAwaitValue()
-        assertThat(notes).isEmpty()
+        assertThat(notes.value).isEmpty()
 
         val note1 = Note(id = 1, title = "Note 1", content = "Note 1 Content")
-        val note2 = Note(id = 2, title = "Note 2", content = "Note 2 Content")
-        val note3 = Note(id = 3, title = "Note 3", content = "Note 3 Content")
-
         notesViewModel.insertNote(note1)
         advanceUntilIdle()
 
+        val note2 = Note(id = 2, title = "Note 2", content = "Note 2 Content")
         notesViewModel.insertNote(note2)
         advanceUntilIdle()
 
+        val note3 = Note(id = 3, title = "Note 3", content = "Note 3 Content")
         notesViewModel.insertNote(note3)
         advanceUntilIdle()
 
-        notes = notesViewModel.notes.getOrAwaitValue()
-        assertThat(notes).isNotEmpty()
-        assertThat(notes).hasSize(3)
+        assertThat(notes.value).isNotEmpty()
+        assertThat(notes.value).hasSize(3)
 
         composeRule.apply {
-            onRoot().printToLog(tag = "Display3NotesTest")
+            onRoot().printToLog(tag = "Write3NotesTest")
 
             onNodeWithText("Note 0").assertDoesNotExist()
 
@@ -116,17 +113,15 @@ class AllNotesScreenTest {
 
     @Test
     fun onAllNotesScreen_swipeNoteToStart_verifySuccessfullyDeleted() = runTest {
-        var notes = notesViewModel.notes.getOrAwaitValue()
-        assertThat(notes).isEmpty()
+        assertThat(notes.value).isEmpty()
 
         val note = Note(id = 1, title = "Note", content = "Note Content")
         notesViewModel.insertNote(note)
         advanceUntilIdle()
 
-        notes = notesViewModel.notes.getOrAwaitValue()
-        assertThat(notes).isNotEmpty()
-        assertThat(notes).hasSize(1)
-        assertThat(notes).contains(note)
+        assertThat(notes.value).isNotEmpty()
+        assertThat(notes.value).hasSize(1)
+        assertThat(notes.value).contains(note)
 
         composeRule.apply {
             onRoot().printToLog(tag = "SwipeNoteToStart")
@@ -140,24 +135,21 @@ class AllNotesScreenTest {
 
             onNodeWithText(note.title).assertDoesNotExist()
 
-            notes = notesViewModel.notes.getOrAwaitValue()
-            assertThat(notes).isEmpty()
+            assertThat(notes.value).isEmpty()
         }
     }
 
     @Test
     fun onAllNotesScreen_swipeNoteToStart_verifySuccessfullyDeleted_restoreNoteWithSnackbarAction() = runTest {
-        var notes = notesViewModel.notes.getOrAwaitValue()
-        assertThat(notes).isEmpty()
+        assertThat(notes.value).isEmpty()
 
         val note = Note(id = 1, title = "Note", content = "Note Content")
         notesViewModel.insertNote(note)
         advanceUntilIdle()
 
-        notes = notesViewModel.notes.getOrAwaitValue()
-        assertThat(notes).isNotEmpty()
-        assertThat(notes).hasSize(1)
-        assertThat(notes).contains(note)
+        assertThat(notes.value).isNotEmpty()
+        assertThat(notes.value).hasSize(1)
+        assertThat(notes.value).contains(note)
 
         composeRule.apply {
             onRoot().printToLog(tag = "SwipeNoteToStart")
@@ -174,8 +166,7 @@ class AllNotesScreenTest {
 
             onNodeWithText(note.title).assertDoesNotExist()
 
-            notes = notesViewModel.notes.getOrAwaitValue()
-            assertThat(notes).isEmpty()
+            assertThat(notes.value).isEmpty()
 
             onRoot().printToLog(tag = "SwipeNoteToStart|Snackbar")
 
@@ -186,10 +177,9 @@ class AllNotesScreenTest {
 
             advanceUntilIdle()
 
-            notes = notesViewModel.notes.getOrAwaitValue()
-            assertThat(notes).isNotEmpty()
-            assertThat(notes).hasSize(1)
-            assertThat(notes).contains(note)
+            assertThat(notes.value).isNotEmpty()
+            assertThat(notes.value).hasSize(1)
+            assertThat(notes.value).contains(note)
 
             onNodeWithText(note.title)
                 .assertExists()

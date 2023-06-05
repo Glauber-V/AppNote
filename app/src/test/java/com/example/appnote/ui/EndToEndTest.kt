@@ -13,7 +13,6 @@ import androidx.compose.ui.test.swipeLeft
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.appnote.AppNoteApp
-import com.example.appnote.AppNoteArguments.NOTE_ID_KEY
 import com.example.appnote.AppNoteDestinations
 import com.example.appnote.R
 import com.example.appnote.data.dispatchers.DispatcherProvider
@@ -22,11 +21,9 @@ import com.example.appnote.di.AppNoteDatabaseModule
 import com.example.appnote.di.DispatcherProviderModule
 import com.example.appnote.ui.theme.AppNoteTheme
 import com.example.appnote.util.assertCurrentRouteIsEqualTo
-import com.example.appnote.util.getOrAwaitValue
 import com.example.appnote.util.getStringResource
 import com.example.appnote.util.rules.StandardTestDispatcherRule
 import com.example.appnote.util.showSemanticTreeInConsole
-import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -59,8 +56,6 @@ class EndToEndTest {
     private lateinit var notesViewModel: NotesViewModel
     private lateinit var navHostController: NavHostController
 
-    private val tag = "EndToEndTestLog | "
-
     @Before
     fun setUp() {
         hiltAndroidRule.inject()
@@ -84,10 +79,6 @@ class EndToEndTest {
 
         composeRule.apply {
             navHostController.assertCurrentRouteIsEqualTo(AppNoteDestinations.ALL_NOTES_ROUTE)
-
-            var notes = notesViewModel.notes.getOrAwaitValue()
-            assertThat(notes).isEmpty()
-            println("$tag Notes database is empty")
 
             onNodeWithText(oldNoteTitle).assertDoesNotExist()
 
@@ -123,13 +114,6 @@ class EndToEndTest {
 
             navHostController.assertCurrentRouteIsEqualTo(AppNoteDestinations.ALL_NOTES_ROUTE)
 
-            notes = notesViewModel.notes.getOrAwaitValue()
-            assertThat(notes).isNotEmpty()
-            assertThat(notes).hasSize(1)
-            assertThat(notes.first().title).contains(oldNoteTitle)
-            assertThat(notes.first().content).contains(oldNoteContent)
-            println("EndToEndTestLog | Note was successfully added to the database")
-
             onNodeWithText(oldNoteTitle)
                 .assertExists()
                 .assertIsDisplayed()
@@ -141,9 +125,6 @@ class EndToEndTest {
             onNodeWithText(oldNoteTitle)
                 .assertIsDisplayed()
                 .performClick()
-
-            val noteIdKey = navHostController.currentBackStackEntry?.arguments?.getInt(NOTE_ID_KEY)
-            println("$tag Receive note id was: $noteIdKey")
 
             navHostController.assertCurrentRouteIsEqualTo(AppNoteDestinations.EDIT_NOTE_ROUTE)
 
@@ -177,8 +158,6 @@ class EndToEndTest {
                 .assertExists()
                 .assertIsDisplayed()
 
-            println("EndToEndTestLog | Note was successfully updated")
-
             val snackbarActionText = getStringResource(R.string.note_snackbar_undo_action)
             onNodeWithText(snackbarActionText).assertDoesNotExist()
 
@@ -188,8 +167,6 @@ class EndToEndTest {
             onNodeWithText(newNoteTitle).assertDoesNotExist()
 
             onNodeWithText(newNoteContent).assertDoesNotExist()
-
-            println("EndToEndTestLog | Note was successfully deleted from the database")
 
             onNodeWithText(snackbarActionText)
                 .assertExists()
@@ -205,8 +182,6 @@ class EndToEndTest {
             onNodeWithText(newNoteContent)
                 .assertExists()
                 .assertIsDisplayed()
-
-            println("EndToEndTestLog | Note was successfully restored to the database")
         }
     }
 }

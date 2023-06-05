@@ -1,7 +1,7 @@
 package com.example.appnote.data.repository
 
-import androidx.lifecycle.LiveData
 import com.example.appnote.data.model.Note
+import kotlinx.coroutines.flow.Flow
 
 interface AppNoteRepository {
 
@@ -11,5 +11,5 @@ interface AppNoteRepository {
 
     suspend fun delete(note: Note)
 
-    fun getAllNotes(): LiveData<List<Note>>
+    fun getAllNotes(): Flow<List<Note>>
 }
