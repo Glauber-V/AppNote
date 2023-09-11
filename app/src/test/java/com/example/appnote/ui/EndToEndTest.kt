@@ -39,20 +39,31 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@HiltAndroidTest
 @UninstallModules(DispatcherProviderModule::class, AppNoteDatabaseModule::class)
-@Config(application = HiltTestApplication::class)
+@ExperimentalCoroutinesApi
+@HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
+@Config(application = HiltTestApplication::class)
 class EndToEndTest {
 
-    @get:Rule(order = 0) val hiltAndroidRule = HiltAndroidRule(this)
-    @get:Rule(order = 1) val standardTestDispatcherRule = StandardTestDispatcherRule()
-    @get:Rule(order = 2) val instantTaskExecutorRule = InstantTaskExecutorRule()
-    @get:Rule(order = 3) val composeRule = createAndroidComposeRule<ComponentActivity>()
+    @get:Rule(order = 0)
+    val hiltAndroidRule = HiltAndroidRule(this)
 
-    @Inject lateinit var appNoteRepository: AppNoteRepository
-    @Inject lateinit var dispatcherProvider: DispatcherProvider
+    @get:Rule(order = 1)
+    val standardTestDispatcherRule = StandardTestDispatcherRule()
+
+    @get:Rule(order = 2)
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule(order = 3)
+    val composeRule = createAndroidComposeRule<ComponentActivity>()
+
+    @Inject
+    lateinit var dispatcherProvider: DispatcherProvider
+
+    @Inject
+    lateinit var appNoteRepository: AppNoteRepository
+
     private lateinit var notesViewModel: NotesViewModel
     private lateinit var navHostController: NavHostController
 
@@ -77,7 +88,7 @@ class EndToEndTest {
         val newNoteTitle = "New note title"
         val newNoteContent = "New note content"
 
-        composeRule.apply {
+        with(composeRule) {
             navHostController.assertCurrentRouteIsEqualTo(AppNoteDestinations.ALL_NOTES_ROUTE)
 
             onNodeWithText(oldNoteTitle).assertDoesNotExist()

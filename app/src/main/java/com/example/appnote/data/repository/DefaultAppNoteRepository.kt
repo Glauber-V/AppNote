@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 class DefaultAppNoteRepository(private val database: AppNoteDatabase) : AppNoteRepository {
 
-
     override suspend fun insert(note: Note) {
         database.getNoteDao().insert(note)
     }

@@ -37,20 +37,31 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@HiltAndroidTest
 @UninstallModules(DispatcherProviderModule::class, AppNoteDatabaseModule::class)
-@Config(application = HiltTestApplication::class)
+@ExperimentalCoroutinesApi
+@HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
+@Config(application = HiltTestApplication::class)
 class EditNoteScreenTest {
 
-    @get:Rule(order = 0) val hiltAndroidRule = HiltAndroidRule(this)
-    @get:Rule(order = 1) val standardTestDispatcherRule = StandardTestDispatcherRule()
-    @get:Rule(order = 2) val instantTaskExecutorRule = InstantTaskExecutorRule()
-    @get:Rule(order = 3) val composeRule = createAndroidComposeRule<ComponentActivity>()
+    @get:Rule(order = 0)
+    val hiltAndroidRule = HiltAndroidRule(this)
 
-    @Inject lateinit var appNoteRepository: AppNoteRepository
-    @Inject lateinit var dispatcherProvider: DispatcherProvider
+    @get:Rule(order = 1)
+    val standardTestDispatcherRule = StandardTestDispatcherRule()
+
+    @get:Rule(order = 2)
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule(order = 3)
+    val composeRule = createAndroidComposeRule<ComponentActivity>()
+
+    @Inject
+    lateinit var dispatcherProvider: DispatcherProvider
+
+    @Inject
+    lateinit var appNoteRepository: AppNoteRepository
+
     private lateinit var notesViewModel: NotesViewModel
     private lateinit var notes: State<List<Note>>
     private lateinit var note: Note
@@ -84,7 +95,7 @@ class EditNoteScreenTest {
         assertThat(notes.value).hasSize(1)
         assertThat(notes.value).contains(note)
 
-        composeRule.apply {
+        with(composeRule) {
             onRoot().printToLog(tag = "EditNoteScreen|NoteWithOldValues")
 
             onNodeWithText(note.title)

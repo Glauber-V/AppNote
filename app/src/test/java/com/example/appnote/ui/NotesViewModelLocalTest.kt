@@ -24,9 +24,14 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class NotesViewModelLocalTest {
 
-    @get:Rule(order = 0) var standardTestDispatcherRule = StandardTestDispatcherRule()
-    @get:Rule(order = 1) var instantTaskExecutorRule = InstantTaskExecutorRule()
-    @get:Rule(order = 2) var appNoteDatabaseRule = AppNoteDatabaseRule()
+    @get:Rule(order = 0)
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule(order = 1)
+    val standardTestDispatcherRule = StandardTestDispatcherRule()
+
+    @get:Rule(order = 2)
+    val appNoteDatabaseRule = AppNoteDatabaseRule()
 
     private lateinit var database: AppNoteDatabase
     private lateinit var dispatcherProvider: DispatcherProvider
