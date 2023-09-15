@@ -1,0 +1,31 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration name="Robolectric Tests Before On Commit" default="false" factoryName="Gradle" type="GradleRunConfiguration">
+        <ExternalSystemSettings>
+            <option name="executionName" />
+            <option name="externalProjectPath" value="$PROJECT_DIR$" />
+            <option name="externalSystemIdString" value="GRADLE" />
+            <option name="scriptParameters" value="" />
+            <option name="taskDescriptions">
+                <list />
+            </option>
+            <option name="taskNames">
+                <list>
+                    <option value=":app:testDebugUnitTest" />
+                    <option value="--tests" />
+                    <option value="&quot;com.example.appnote.ui.AddNoteFragmentLocalTest&quot;" />
+                    <option value="--tests" />
+                    <option value="&quot;com.example.appnote.ui.EditNoteFragmentLocalTest&quot;" />
+                    <option value="--tests" />
+                    <option value="&quot;com.example.appnote.ui.NotesFragmentLocalTest&quot;" />
+                    <option value="--tests" />
+                    <option value="&quot;com.example.appnote.ui.NotesViewModelLocalTest&quot;" />
+                </list>
+            </option>
+            <option name="vmOptions" />
+        </ExternalSystemSettings>
+        <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+        <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+        <DebugAllEnabled>false</DebugAllEnabled>
+        <method v="2" />
+    </configuration>
+</component>
