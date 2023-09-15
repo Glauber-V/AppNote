@@ -30,9 +30,9 @@ fun AppNoteNavHost(
     val notes by notesViewModel.notes.observeAsState(initial = emptyList())
 
     NavHost(
+        modifier = modifier,
         navController = navController,
-        startDestination = startDestination,
-        modifier = modifier
+        startDestination = startDestination
     ) {
         composable(route = AppNoteDestinations.ALL_NOTES_ROUTE) {
             AllNotesScreen(

@@ -42,12 +42,12 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllNotesScreen(
+    modifier: Modifier = Modifier,
     notes: List<Note>,
     onFabClicked: () -> Unit,
     onNoteClicked: (Note) -> Unit,
     onNoteDeleted: (Note) -> Unit,
-    onNoteRestored: (Note) -> Unit,
-    modifier: Modifier = Modifier
+    onNoteRestored: (Note) -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -114,10 +114,10 @@ fun AllNotesScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteItem(
+    modifier: Modifier = Modifier,
     noteTitle: String,
     noteContent: String,
-    onNoteClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    onNoteClicked: () -> Unit
 ) {
     Card(
         onClick = onNoteClicked,

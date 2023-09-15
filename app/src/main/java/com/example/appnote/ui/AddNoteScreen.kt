@@ -28,8 +28,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddNoteScreen(
-    onFabClicked: (Note) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFabClicked: (Note) -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -65,11 +65,11 @@ fun AddNoteScreen(
         }
     ) { contentPadding ->
         NoteDetail(
+            modifier = Modifier.padding(contentPadding),
             noteTitle = title,
             onNoteTitleChanged = { title = it },
             noteContent = content,
-            onNoteContentChanged = { content = it },
-            modifier = Modifier.padding(contentPadding)
+            onNoteContentChanged = { content = it }
         )
     }
 }
