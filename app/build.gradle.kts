@@ -89,6 +89,10 @@ dependencies {
     //  Unit test dependencies
     testImplementation("junit:junit:4.13.2")
 
+    testImplementation(composeBom)
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
     testImplementation("androidx.test:core-ktx:1.5.0")
     testImplementation("androidx.test.ext:junit-ktx:1.1.5")
     testImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -105,7 +109,4 @@ dependencies {
     kspTest("com.google.dagger:hilt-android-compiler:2.49")
 
     testImplementation("org.robolectric:robolectric:4.11.1")
-
-    testImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
