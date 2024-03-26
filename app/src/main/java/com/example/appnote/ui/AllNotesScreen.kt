@@ -11,8 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Create
 import androidx.compose.material3.Card
-import androidx.compose.material3.DismissDirection
-import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -21,9 +19,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDismissState
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -76,9 +75,9 @@ fun AllNotesScreen(
                 items = notes,
                 key = { it.id }
             ) { note: Note ->
-                val dismissState = rememberDismissState(
-                    confirmValueChange = { currentDismissValue ->
-                        if (currentDismissValue == DismissValue.DismissedToStart) {
+                val dismissState = rememberSwipeToDismissBoxState(
+                    confirmValueChange = { swipeToDismissBoxValue ->
+                        if (swipeToDismissBoxValue == SwipeToDismissBoxValue.EndToStart) {
                             onNoteDeleted(note)
                             scope.launch {
                                 val snackbarActionResult = snackbarHostState.showSnackbar(
@@ -91,27 +90,26 @@ fun AllNotesScreen(
                                 }
                             }
                         }
-                        currentDismissValue != DismissValue.DismissedToStart
+                        swipeToDismissBoxValue != SwipeToDismissBoxValue.EndToStart
                     }
                 )
-                SwipeToDismiss(
+                SwipeToDismissBox(
                     state = dismissState,
-                    directions = setOf(DismissDirection.EndToStart),
-                    background = {},
-                    dismissContent = {
-                        NoteItem(
-                            noteTitle = note.title,
-                            noteContent = note.content,
-                            onNoteClicked = { onNoteClicked(note) }
-                        )
-                    }
-                )
+                    enableDismissFromEndToStart = true,
+                    enableDismissFromStartToEnd = false,
+                    backgroundContent = {}
+                ) {
+                    NoteItem(
+                        noteTitle = note.title,
+                        noteContent = note.content,
+                        onNoteClicked = { onNoteClicked(note) }
+                    )
+                }
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteItem(
     modifier: Modifier = Modifier,
